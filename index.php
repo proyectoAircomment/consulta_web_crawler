@@ -12,22 +12,40 @@ $link = "http://190.27.249.245/obs";
 
 
 //por ahora no sirve
-function get_content($url)
+function get_content($url,$tag)
 {
-    $input = file_get_html($url);
-    $metars = $input->find('<table[class="sortable obs-display"]>');
+    $html = file_get_html($url);
+    global $metars;
+    echo '<br><br>';
     
-    print_r($metars);
-    echo count($metars);
-    
-    
-    foreach($metars as $metar)
+    foreach(($html->find('#content #primary_content '.$tag)) as $i=>$metar)
+     {
+         echo $metar;
+         $metars[] = $metar;
+     }
+}
+
+function getArray($array)
+{
+    $i=0;
+    foreach ($array as $value) 
     {
-        $tr = $metar->find('tr',0);
-        echo $tr;
+        $i++;
+        echo " [".$i."]: ".$value;
     }
 }
 
-get_content($link);
+get_content($link, 'div',$metars);
+
+echo "<br>";
+
+echo count($metars);
+echo "<p>el array es: </p>";
+
+getArray($metars);
+
+//get_content($link, 'table');
+
+
 ?>
 
